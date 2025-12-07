@@ -24,6 +24,7 @@ export const AuthProvider = ({ children }) => {
       const response = await authAPI.getCurrentUser();
       setUser(response.data.user);
     } catch (error) {
+      // Si no está autenticado, simplemente dejamos user como null
       setUser(null);
     } finally {
       setLoading(false);

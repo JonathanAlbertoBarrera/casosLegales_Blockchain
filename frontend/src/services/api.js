@@ -14,9 +14,12 @@ const api = axios.create({
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      // Redireccionar al login si no está autenticado
-      window.location.href = '/login';
+    // Solo redirigir al login si hay error 401 y NO estamos ya en la página de login
+    if (error.response?.status === 401 && !window.location.pathname.includes('/login')) {
+      // No redirigir si es el endpoint de verificación de usuario
+      if (!error.config.url.includes('/auth/me')) {
+        window.location.href = '/login';
+      }
     }
     return Promise.reject(error);
   }
@@ -71,6 +74,9 @@ export const judgesAPI = {
 export const blockchainAPI = {
   verify: () => 
     api.get('/blockchain/verify'),
+  
+  getChain: () => 
+    api.get('/blockchain/chain'),
   
   getStatistics: () => 
     api.get('/blockchain/statistics'),

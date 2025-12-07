@@ -6,8 +6,8 @@ Proporciona endpoints para gestionar casos, usuarios y autenticación
 from flask import Flask, request, jsonify, session
 from flask_cors import CORS
 from werkzeug.security import generate_password_hash, check_password_hash
-import psycopg2
-from psycopg2.extras import RealDictCursor
+import psycopg
+from psycopg.rows import dict_row
 import os
 from datetime import datetime, timedelta
 import secrets
@@ -39,9 +39,16 @@ DB_CONFIG = {
 def get_db_connection():
     """Crea una conexión a la base de datos PostgreSQL"""
     try:
-        conn = psycopg2.connect(**DB_CONFIG, cursor_factory=RealDictCursor)
+        conn = psycopg.connect(
+            host=DB_CONFIG['host'],
+            dbname=DB_CONFIG['database'],
+            user=DB_CONFIG['user'],
+            password=DB_CONFIG['password'],
+            port=DB_CONFIG['port'],
+            row_factory=dict_row
+        )
         return conn
-    except psycopg2.Error as e:
+    except psycopg.Error as e:
         print(f"Error conectando a la base de datos: {e}")
         return None
 
@@ -50,7 +57,7 @@ def init_database():
     """Inicializa las tablas de la base de datos"""
     conn = get_db_connection()
     if not conn:
-        print("  No se pudo conectar a PostgreSQL. Usando modo sin base de datos.")
+        print("No se pudo conectar a PostgreSQL. Usando modo sin base de datos.")
         return False
     
     try:
@@ -83,11 +90,12 @@ def init_database():
         conn.commit()
         cur.close()
         conn.close()
-        print(" Base de datos inicializada correctamente")
+        print("Base de datos inicializada correctamente")
         return True
-    except psycopg2.Error as e:
-        print(f" Error inicializando base de datos: {e}")
+    except psycopg.Error as e:
+        print(f"Error inicializando base de datos: {e}")
         return False
+        
 
 
 def login_required(f):
@@ -144,7 +152,7 @@ def register():
             "user": dict(user)
         }), 201
         
-    except psycopg2.Error as e:
+    except psycopg.Error as e:
         return jsonify({"error": f"Error en base de datos: {str(e)}"}), 500
 
 
@@ -186,7 +194,7 @@ def login():
             }
         }), 200
         
-    except psycopg2.Error as e:
+    except psycopg.Error as e:
         return jsonify({"error": f"Error en base de datos: {str(e)}"}), 500
 
 
@@ -219,7 +227,7 @@ def get_current_user():
         
         return jsonify({"user": dict(user)}), 200
         
-    except psycopg2.Error as e:
+    except psycopg.Error as e:
         return jsonify({"error": f"Error en base de datos: {str(e)}"}), 500
 
 
@@ -383,6 +391,33 @@ def verify_blockchain():
     return jsonify({"valid": is_valid}), 200
 
 
+@app.route('/api/blockchain/chain', methods=['GET'])
+@login_required
+def get_blockchain_chain():
+    """Obtiene la cadena completa de bloques"""
+    chain = []
+    for block in court_system.blockchain.chain:
+        chain.append({
+            'index': block.index,
+            'timestamp': block.timestamp,
+            'transactions': [
+                {
+                    'case_id': tx.case_id,
+                    'action': tx.action,
+                    'parties': tx.parties,
+                    'judge': tx.judge,
+                    'data': tx.data,
+                    'timestamp': tx.timestamp
+                }
+                for tx in block.transactions
+            ],
+            'previous_hash': block.previous_hash,
+            'hash': block.hash,
+            'nonce': block.nonce
+        })
+    return jsonify({"chain": chain}), 200
+
+
 @app.route('/api/blockchain/statistics', methods=['GET'])
 @login_required
 def get_statistics():
@@ -418,7 +453,7 @@ def verify_document():
 
 @app.route('/api/health', methods=['GET'])
 def health_check():
-    """Health check endpoint"""
+    "Health check endpoint"
     return jsonify({
         "status": "healthy",
         "service": "Judicial Blockchain API",
@@ -431,21 +466,21 @@ def health_check():
 # ============================================================================
 
 if __name__ == '__main__':
-    print("  Iniciando Sistema Judicial Blockchain API...")
+    print("Iniciando Sistema Judicial Blockchain API...")
     
     # Inicializar base de datos
     db_initialized = init_database()
     
     if not db_initialized:
-        print("  Ejecutando sin base de datos. Algunas funcionalidades estarán limitadas.")
+        print("Ejecutando sin base de datos. Algunas funcionalidades estaran limitadas.")
     
     # Inicializar algunos jueces por defecto
-    court_system.register_judge("María Rodríguez", "civil")
+    court_system.register_judge("Maria Rodriguez", "civil")
     court_system.register_judge("Carlos Mendoza", "penal")
-    court_system.register_judge("Ana López", "laboral")
+    court_system.register_judge("Ana Lopez", "laboral")
     
-    print("\n Sistema inicializado correctamente")
-    print(" API ejecutándose en http://localhost:5000")
-    print(" Documentación disponible en /api/health\n")
+    print("\nSistema inicializado correctamente")
+    print("API ejecutandose en http://localhost:5000")
+    print("Documentacion disponible en /api/health\n")
     
     app.run(debug=True, host='0.0.0.0', port=5000)

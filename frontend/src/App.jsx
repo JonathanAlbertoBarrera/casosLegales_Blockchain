@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import CaseDetails from './pages/CaseDetails';
+import BlockchainView from './pages/BlockchainView';
 import './index.css';
 
 const ProtectedRoute = ({ children }) => {
@@ -35,6 +37,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/cases/:caseId"
+            element={
+              <ProtectedRoute>
+                <CaseDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/blockchain"
+            element={
+              <ProtectedRoute>
+                <BlockchainView />
               </ProtectedRoute>
             }
           />

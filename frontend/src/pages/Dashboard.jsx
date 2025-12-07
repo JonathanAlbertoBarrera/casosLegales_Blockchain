@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { casesAPI, blockchainAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
+import CreateCaseModal from '../components/CreateCaseModal';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -23,6 +24,7 @@ const Dashboard = () => {
   const [statistics, setStatistics] = useState(null);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -181,7 +183,7 @@ const Dashboard = () => {
           </div>
           <div className="action-buttons">
             <button 
-              onClick={() => navigate('/cases/new')} 
+              onClick={() => setShowCreateModal(true)} 
               className="btn btn-primary"
             >
               <Plus size={20} />
@@ -211,7 +213,7 @@ const Dashboard = () => {
               <AlertCircle size={48} color="#94a3b8" />
               <p>No se encontraron casos</p>
               <button 
-                onClick={() => navigate('/cases/new')} 
+                onClick={() => setShowCreateModal(true)} 
                 className="btn btn-primary"
               >
                 Crear Primer Caso
@@ -272,29 +274,36 @@ const Dashboard = () => {
         {/* Blockchain Status */}
         <div className="blockchain-status card">
           <div className="status-header">
-            <Shield size={24} color="#10b981" />
+            <Shield size={24} color="white" />
             <h3>Estado de la Blockchain</h3>
           </div>
           <div className="status-grid">
             <div className="status-item">
               <p className="status-label">Total Bloques</p>
-              <p className="status-value">{statistics?.total_blocks}</p>
+              <p className="status-value">{statistics?.total_blocks || 0}</p>
             </div>
             <div className="status-item">
               <p className="status-label">Transacciones</p>
-              <p className="status-value">{statistics?.total_transactions}</p>
+              <p className="status-value">{statistics?.total_transactions || 0}</p>
             </div>
             <div className="status-item">
               <p className="status-label">Dificultad</p>
-              <p className="status-value">{statistics?.difficulty}</p>
+              <p className="status-value">{statistics?.difficulty || 3}</p>
             </div>
             <div className="status-item">
               <p className="status-label">Integridad</p>
-              <p className="status-value" style={{ color: '#10b981' }}>✓ Verificada</p>
+              <p className="status-value">✓ Verificada</p>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Modal para crear caso */}
+      <CreateCaseModal 
+        isOpen={showCreateModal} 
+        onClose={() => setShowCreateModal(false)}
+        onCaseCreated={loadData}
+      />
     </div>
   );
 };

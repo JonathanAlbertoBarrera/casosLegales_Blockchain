@@ -278,8 +278,8 @@
 
 /* Blockchain Status */
 .blockchain-status {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
   padding: 2rem;
 }
 
@@ -293,6 +293,7 @@
 .status-header h3 {
   margin: 0;
   font-size: 1.25rem;
+  color: white !important;
 }
 
 .status-grid {
@@ -304,21 +305,24 @@
 .status-item {
   text-align: center;
   padding: 1rem;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 8px;
   backdrop-filter: blur(10px);
 }
 
 .status-label {
   font-size: 0.9rem;
-  opacity: 0.9;
+  opacity: 1;
   margin-bottom: 0.5rem;
+  color: white !important;
+  font-weight: 500;
 }
 
 .status-value {
   font-size: 1.5rem;
   font-weight: 700;
   margin: 0;
+  color: white !important;
 }
 
 /* Loading */

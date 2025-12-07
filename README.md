@@ -56,9 +56,15 @@ CREATE DATABASE judicial_blockchain;
 \q
 
 # Opción 2: Usando pgAdmin (interfaz gráfica)
+# 1. Clic derecho en Databases -> Create -> Database
+# 2. Nombre: judicial_blockchain
+# 3. Save
 
 # Inicializar tablas
 psql -U postgres -d judicial_blockchain -f init_db.sql
+
+# Crear usuario administrador
+python create_admin.py
 ```
 
 **Configuración de `.env`:**

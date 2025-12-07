@@ -1,0 +1,258 @@
+.blockchain-view-page {
+  min-height: 100vh;
+  background: var(--background);
+  padding: 2rem;
+}
+
+.blockchain-header {
+  max-width: 1400px;
+  margin: 0 auto 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.blockchain-header h1 {
+  font-size: 1.75rem;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.blockchain-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.validation-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: white;
+  border: 2px solid;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+}
+
+.validation-card.valid {
+  border-color: #10b981;
+  background: #d1fae5;
+}
+
+.validation-card.invalid {
+  border-color: #ef4444;
+  background: #fee2e2;
+}
+
+.validation-card h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1.25rem;
+}
+
+.validation-card p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.blocks-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  position: relative;
+}
+
+.block-card {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+  border: 2px solid var(--border);
+  position: relative;
+}
+
+.block-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.block-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.block-title h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+}
+
+.genesis-badge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.block-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.info-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.info-row .label {
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.hash {
+  background: #f8fafc;
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  word-break: break-all;
+  color: #667eea;
+}
+
+.transactions-section {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid var(--border);
+}
+
+.transactions-section h4 {
+  margin: 0 0 1rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.transaction-item {
+  background: var(--background);
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid var(--primary);
+  margin-bottom: 1rem;
+}
+
+.transaction-item:last-child {
+  margin-bottom: 0;
+}
+
+.tx-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.tx-action {
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 0.9rem;
+}
+
+.tx-case {
+  background: var(--primary);
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+}
+
+.tx-details p {
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.tx-time {
+  margin-top: 0.5rem !important;
+  font-size: 0.8rem !important;
+  font-style: italic;
+}
+
+.block-connection {
+  position: absolute;
+  bottom: -2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--primary);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateX(-50%) translateY(5px);
+  }
+}
+
+.blockchain-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.summary-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+  border: 2px solid var(--border);
+}
+
+.summary-card h4 {
+  margin: 0 0 0.75rem;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summary-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--primary);
+}
+
+@media (max-width: 768px) {
+  .blockchain-view-page {
+    padding: 1rem;
+  }
+
+  .info-row {
+    grid-template-columns: 1fr;
+  }
+
+  .blockchain-summary {
+    grid-template-columns: 1fr;
+  }
+}
